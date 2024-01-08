@@ -1,99 +1,171 @@
 <script>
+  // @ts-nocheck
+
   export let data;
   export let level = 1;
   let updatedVerse = data?.verse?.verse;
-  console.log(level,updatedVerse)
-  
-  const removeTrailingLetter = ()=>{
-      const description = data?.verse?.verse;
-      
-    updatedVerse = replaceLettersInParagraph(description,level);
-    console.log(level , updatedVerse);
+  let wordsArray;
+  let lastLevel = false;
 
+  $:{
+    wordsArray = updatedVerse.split(" ");
   }
 
-  function replaceLettersInParagraph(paragraph, level) {
-    const words = paragraph.split(' ');
+  const removeTrailingLetter = () => {
+    const previousVerse = updatedVerse;
+    updatedVerse = replaceLettersInParagraph(updatedVerse, false , false);
 
-    // Replace letters in each word based on the current level
-    const modifiedWords = words.map(word => replaceLettersInWord(word, level));
+    if (previousVerse == updatedVerse) {
+      //if all trailing Letters are removed , remode first letter , else remove all trailing letters
+        updatedVerse = checkTrailingLetterRemoved() ?replaceLettersInParagraph(updatedVerse, true , false):replaceLettersInParagraph(updatedVerse, false , true) ;
+    }
+    wordsArray = updatedVerse.split(" ");
+    console.log(level,updatedVerse);
+  };
+  
+  const checkTrailingLetterRemoved=()=>{
+    for (let i = 0; i < wordsArray.length; i++) {
+      for (let j = 1; j < wordsArray[i].length; j++) {
+        if (wordsArray[i][j] !== "_") return false;
+      }
+    }
+    return true;
+  }
+
+
+  function replaceLettersInParagraph(paragraph, removeAllLetters , removeAllTrailingLetter) {
+    const words = paragraph.split(" ");
+    
+    // Replace letters in each word
+    const modifiedWords = words.map((word) =>
+      replaceLettersInWord(word, removeAllLetters , removeAllTrailingLetter)
+    );
 
     // Join the modified words back into a paragraph
-    const modifiedParagraph = modifiedWords.join(' ');
-
+    const modifiedParagraph = modifiedWords.join(" ");
     return modifiedParagraph;
-}
+  }
 
-function replaceLettersInWord(word, level) {
-    // If the level is less than the word length, replace letters
-    if (level <= word.length) {
-        // Replace trailing letters with underscores
-        const replacedLetters = word.slice(0, -level+1) + '_'.repeat(level);
+  function replaceLettersInWord(word, removeAllLetters , removeAllTrailingLetter) {
+    
+    let replacedWord = removeAllLetters ? "_" : word.charAt(0);
 
-        return replacedLetters;
-    } else {
-        // If the level is equal to or greater than the word length,
-        // replace all letters except the first one
-        //return word.charAt(0) + word.slice(1).replace(/[a-zA-Z]/g, '_');
-        // return word.slice(0)
-        // return '_';
+    for (let j = 1; j < word.length; j++) {
 
-        return word.slice(1).replace(/[a-zA-Z]/g, '_');
+      if (removeAllLetters) {
+        replacedWord += word.charAt(j);
+        lastLevel=true;
+      } else {
+        // Randomly decide whether to replace the letter
+        const randomNumber = (Math.random() * 10) % 2;
+        const letter = word.charAt(j);
+         if (removeAllTrailingLetter || (letter !== "_" && Math.floor(randomNumber))) {
+          replacedWord += "_";
+        } else {
+          replacedWord += word.charAt(j);
+        }
+      }
     }
-}
 
-  const handleNextButton = ()=>{
+    return replacedWord;
+  }
+
+  const handleNextButton = () => {
     console.log("NEXT CLICKKED");
     level = level + 1;
     removeTrailingLetter();
+  };
 
-  }
-
-  const handlePrevButton = ()=>{
+  const handlePrevButton = () => {
     console.log("Prev CLICKKED");
+    updatedVerse = data?.verse?.verse;
+   // wordsArray = updatedVerse.split(" ");
+    removeTrailingLetter();
     level = 1;
-  }
+    lastLevel=false;
+  };
 
-  const handleShowButton = ()=>{
-    console.log("Show CLICKKED")
-  }
+  const handleShowButton = () => {
+    console.log("Show CLICKKED");
+    const previousVerse = updatedVerse;
+    updatedVerse = data?.verse?.verse;
+    //wordsArray = updatedVerse.split(" ");
+  };
 
+  function getLetters(word) {
+    return word.split("");
+  }
 </script>
 
 <div class="VerseCard-Conatiner">
   <div class="VerseCard-Main">
     <h1>{data?.verse?.reference}</h1>
-    <div>{updatedVerse}</div>
+    <!-- <div >{updatedVerse}</div> -->
+    <div id="verse-boxes">
+      {#each wordsArray as word}
+        <div class="word-box">
+          {#each getLetters(word) as letter}
+            <div class="letter-box ">{letter}</div>
+          {/each}
+        </div>
+      {/each}
+    </div>
   </div>
 
   <div class="Button-Container">
-     <button class="ShowButton" on:click={handleShowButton}>Show</button>
-     <div class="LevelButton-Container">
-        <button class="Prev" on:click={handlePrevButton}>Prev</button>
-        <div class="Level">Level {level}</div>
-        <button class="Next" on:click={handleNextButton}>Next</button>
-     </div>
+    <button class="ShowButton" on:mouseover={handleShowButton} on:mouseleave={() => isHovered = false}>Show</button>
+    <div class="LevelButton-Container">
+      <button class="Prev" on:click={handlePrevButton}>Prev</button>
+      <div class="Level">Level {level}</div>
+      <button class="Next" on:click={handleNextButton} disabled={lastLevel}>Next</button>
+    </div>
   </div>
 </div>
 
 <style>
-    .Button-Container {
-        display: flex;
-        flex-direction: column;
-    }
+  .Button-Container {
+    display: flex;
+    flex-direction: column;
+  }
 
-    .ShowButton {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        max-width: 100px;
-        margin: 0 auto;
-    }
+  .ShowButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100px;
+    margin: 0 auto;
+  }
 
-    .LevelButton-Container {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        margin: 20px;
-    }
+  .LevelButton-Container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 20px;
+  }
+
+  #verse-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .word-box {
+    display: flex;
+    flex-direction: columns;
+    border: 2px solid skyblue;
+    margin-right: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .letter-box {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    font-size: 18px;
+    flex-direction: columns;
+  }
 </style>

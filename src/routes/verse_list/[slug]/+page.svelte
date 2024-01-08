@@ -3,17 +3,19 @@
 
   export let data;
   export let level = 1;
-  let updatedVerse = data?.verse?.verse;
+//  let updatedVerse = data?.verse?.verse;
   let wordsArray;
+  let verseData = data?.verse?.verse;
   let lastLevel = false;
+  let previousVerse;
 
   $:{
-    wordsArray = updatedVerse.split(" ");
+    wordsArray = verseData.split(" ");
   }
 
   const removeTrailingLetter = () => {
-    const previousVerse = updatedVerse;
-    updatedVerse = replaceLettersInParagraph(updatedVerse, false , false);
+    const previousVerse = verseData;
+   let updatedVerse = replaceLettersInParagraph(verseData, false , false);
 
     if (previousVerse == updatedVerse) {
       //if all trailing Letters are removed , remode first letter , else remove all trailing letters
@@ -21,6 +23,7 @@
     }
     wordsArray = updatedVerse.split(" ");
     console.log(level,updatedVerse);
+    verseData = updatedVerse;
   };
   
   const checkTrailingLetterRemoved=()=>{
@@ -78,8 +81,7 @@
 
   const handlePrevButton = () => {
     console.log("Prev CLICKKED");
-    updatedVerse = data?.verse?.verse;
-   // wordsArray = updatedVerse.split(" ");
+    verseData = data?.verse?.verse;
     removeTrailingLetter();
     level = 1;
     lastLevel=false;
@@ -87,10 +89,14 @@
 
   const handleShowButton = () => {
     console.log("Show CLICKKED");
-    const previousVerse = updatedVerse;
-    updatedVerse = data?.verse?.verse;
-    //wordsArray = updatedVerse.split(" ");
+    previousVerse = verseData;
+    verseData = data?.verse?.verse;
   };
+
+  const handleShowMouseLeave = () =>{
+    console.log("mouse leave");
+    verseData = previousVerse;
+  }
 
   function getLetters(word) {
     return word.split("");
@@ -113,7 +119,8 @@
   </div>
 
   <div class="Button-Container">
-    <button class="ShowButton" on:mouseover={handleShowButton} on:mouseleave={() => isHovered = false}>Show</button>
+    <!-- svelte-ignore a11y-mouse-events-have-key-events -->
+    <button class="ShowButton" on:mouseover={handleShowButton} on:mouseleave={handleShowMouseLeave}>Show</button>
     <div class="LevelButton-Container">
       <button class="Prev" on:click={handlePrevButton}>Prev</button>
       <div class="Level">Level {level}</div>

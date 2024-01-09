@@ -4,7 +4,6 @@
 
   export let data;
   export let level = 1;
-//  let updatedVerse = data?.verse?.verse;
   let wordsArray;
   let verseData = data?.verse?.verse;
   let lastLevel = false;
@@ -122,7 +121,7 @@
     <!-- svelte-ignore a11y-mouse-events-have-key-events -->
     <button class="ShowButton" on:mouseover={handleShowButton} on:mouseleave={handleShowMouseLeave}>Show</button>
     <div class="LevelButton-Container">
-      <button class="Prev" on:click={handlePrevButton}>Prev</button>
+      <button class="Prev" on:click={handlePrevButton} disabled={level == 1}>Prev</button>
       <div class="Level">Level {level}</div>
       <button class="Next" on:click={handleNextButton} disabled={lastLevel}>Next</button>
     </div>
@@ -133,28 +132,59 @@
 
 
 .VerseCard-Conatiner{
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   background-image: url("");
   background-size: cover;
-  padding: 0;
-  margin: 0;
   overflow: hidden;
   background-position: center;
+  background-color: #FFE5E5;
+  justify-content: center;
+  align-items: center;
+}
+
+.VerseCard-Main{
+  display: flex;
+  margin: 2rem;
+  flex-direction: column;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+.VerseCard-Main h1{
+  display: flex;
+  justify-content: center;
+  font-size: 3rem;
+
 }
 
   button{
     display: flex;
     margin: 1rem;
-    padding: 1rem;
-    border: 1px solid lightgreen;
+    padding: 1rem 2.5rem;
+    border: 1px solid #FFE5E5;
     border-radius: 1rem;
-    font-size: 1rem;
-    background-color: lightgreen;
+    font-size: 1.5rem;
+    background-color: #85d389;
+    cursor: pointer;
+  }
+
+  button:hover{
+    background-color: #A8DF8E;
+    color: white;
+    
+  }
+
+  button:disabled{
+    background-color: rgb(186, 232, 211);
+    color: grey;
   }
 
   .Button-Container {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
   }
 
   .ShowButton {
@@ -170,6 +200,12 @@
     flex-direction: row;
     justify-content: space-around;
     margin: 20px;
+    font-size: 1.5rem;
+    align-items: center;
+  }
+  
+  .Level{
+    border-bottom: 2px solid gray;
   }
 
   #verse-boxes {

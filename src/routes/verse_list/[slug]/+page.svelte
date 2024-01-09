@@ -1,5 +1,6 @@
 <script>
   // @ts-nocheck
+  import backgroundImg from '$lib/backgroundImg.webp';
 
   export let data;
   export let level = 1;
@@ -103,10 +104,9 @@
   }
 </script>
 
-<div class="VerseCard-Conatiner">
+<div class="VerseCard-Conatiner" >
   <div class="VerseCard-Main">
     <h1>{data?.verse?.reference}</h1>
-    <!-- <div >{updatedVerse}</div> -->
     <div id="verse-boxes">
       {#each wordsArray as word}
         <div class="word-box">
@@ -130,6 +130,28 @@
 </div>
 
 <style>
+
+
+.VerseCard-Conatiner{
+  height: 100vh;
+  background-image: url("");
+  background-size: cover;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background-position: center;
+}
+
+  button{
+    display: flex;
+    margin: 1rem;
+    padding: 1rem;
+    border: 1px solid lightgreen;
+    border-radius: 1rem;
+    font-size: 1rem;
+    background-color: lightgreen;
+  }
+
   .Button-Container {
     display: flex;
     flex-direction: column;

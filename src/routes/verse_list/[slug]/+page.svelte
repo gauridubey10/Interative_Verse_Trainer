@@ -1,6 +1,5 @@
 <script>
   // @ts-nocheck
-  import backgroundImg from '$lib/backgroundImg.webp';
 
   export let data;
   export let level = 1;

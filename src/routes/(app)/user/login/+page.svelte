@@ -1,8 +1,18 @@
 <script>
- 
-     export let data;
+// @ts-nocheck
 
-     console.log("users", data.users , data.sessions);
+ 
+ import { enhance } from '$app/forms';
+  import { user } from '../../../../stores.js';
+export let form;
+export let data;
+
+$:clearUser = data?.clearUser;
+
+$:{
+    if(clearUser) user.set(undefined);
+}
+
 </script>
 
 <div class="Login-main">
@@ -10,19 +20,29 @@
   <div class="form-header">Sign in to your account
   <div class="Register-user">
     Dont have an account?
-    <a href="/user/register">register here</a>
+    <a href="/user/signup">register here</a>
   </div>
 </div>  
-  <form method="POST">
+  <form  method="POST" action="?/login">
     <label for="email">Email
-    <input id="email" type="email-address" name="email" required/>
+    <input value={form?.email??''} id="email" type="email-address" name="email" required/>
     </label>
 
     <label for="password">Password
     <input id="password" type="text" name="password" required/>
     </label>
+
+    <div class="form-item">
+        {#if form?.error}
+        <small>{form?.message}</small>
+        {/if}
+    </div>
     
     <button type="submit">Sign In</button>
+
+    <div class="form-item">
+        <a class="reset-link" href="/forgotPassword"><small>Forgot Password?</small></a>
+    </div>
   </form>
 </div>
 </div>

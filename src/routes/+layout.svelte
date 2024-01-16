@@ -2,9 +2,9 @@
 <script>
    import {onMount} from 'svelte';
    import {page} from '$app/stores';
-  import Header from './Header.svelte';
+  import Navbar from "$lib/Navbar.svelte";
 
-
+export let data;
   let showHeader = false;
 
   const unsubscribe = page.subscribe(($page) => {
@@ -17,7 +17,7 @@
 
 </script>
 
- <Header/>
+ <Navbar/>
   <main>
     <slot />
   </main>

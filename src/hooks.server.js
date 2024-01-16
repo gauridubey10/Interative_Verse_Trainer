@@ -1,26 +1,47 @@
 // @ts-nocheck
 // // @ts-ignore
 
-import { start_mongo } from '$db/mongo';
+import { dbConn } from '$db/mongo';
+import jwt from 'jsonwebtoken';
+import { findUserByEmail } from './backendUtils';
+import { SECRET_INGREDIENT } from '$env/static/private';
+import { redirect } from '@sveltejs/kit';
 
-start_mongo().then(()=>{
-  console.log("mongo started");
-}).catch(e=>{
-  console.log(e);
-})
+export async function load({ event }) {
+  // Set event.locals.user to true
+  event.locals.user = true;
+  user.set(true);
+}
 
 export async function handle({event,resolve}) {
-   
-    if (event.url.pathname.startsWith('/custom')) {
-        const response = new Response(null, {
-                status: 302,
-                headers: {
-                  Location: "/user/sign-in",
-                },
-              })
-            
-              return response
-	}
-    return await resolve(event);
+  const authToken = event.cookies.get('authToken');
+    if(!authToken){
+       event.locals.authedUser = undefined;
+       return await resolve(event)
+      }
+    const claims = jwt.verify(authToken,SECRET_INGREDIENT);
     
+    if(!claims) event.locals.authedUser = undefined;
+  
+    // if(authToken && claims && event.url.pathname =='/user/login'){
+    //     const collection = await dbConn();
+    //     const fullUser = await findUserByEmail(collection,claims.email);
+    //     event.locals.user = {
+    //      user: fullUser.email
+    //     }
+    //     return await resolve(event)
+    //   //throw redirect(303 , '/verse_list');
+    
+    // }
+
+    // if(authToken && claims && event.url.pathname =='/verse_list'){
+    //   event.locals.user = {
+    //     user: true
+    //    }
+    // }
+
+    event.locals.user = true;
+
+    return await resolve(event)
+ 
 }

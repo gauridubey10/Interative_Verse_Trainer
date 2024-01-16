@@ -17,9 +17,7 @@
 
 </script>
 
-{#if showHeader}
  <Header/>
- {/if}
   <main>
     <slot />
   </main>

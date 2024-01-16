@@ -1,5 +1,17 @@
 <script>
+// @ts-nocheck
+
   let userLogin = false;
+  import { page } from '$app/stores';
+  import { isAuthenticated , login } from '$lib/auth.js';
+  console.log("page..",$page.data.user , $isAuthenticated);
+  
+  let count_value;
+  isAuthenticated.subscribe(value => {
+    count_value = value;
+    console.log('isAuthenticated in Svelte:', value);
+  });
+  // login();
 </script>
 
 <header>
@@ -7,18 +19,18 @@
     <div class="page-icon">
       <a href="/">Interactive Verse Trainer</a>
     </div>
+     {#if $page.url.pathname != '/user/sign-in'}
     <div class="Header-button">
-      
        <ul>
-        {#if !userLogin}
+        {#if !count_value}
         <button><li><a href="/user/sign-in">Sign-In</a></li></button>
         <button><li><a href="/user/sign-out"> Register</a></li></button>
         {:else}
         <button><li><a href="/user/logout">Logout</a></li></button>
         {/if}
        </ul>
-    
     </div>
+    {/if}
   </nav>
 </header>
 

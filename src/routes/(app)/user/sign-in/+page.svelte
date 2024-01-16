@@ -1,6 +1,8 @@
 <script>
-    // export let userData;
-    // console.log("uuuuuuuuuuuuuu",userData);
+ 
+     export let data;
+
+     console.log("users", data.users , data.sessions);
 </script>
 
 <div class="Login-main">

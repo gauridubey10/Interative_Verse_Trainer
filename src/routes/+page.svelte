@@ -4,7 +4,7 @@
 
 <div class="page">
 <p>Interactive Verse Trainer</p>
-<button><a href="/verse_list">Start Game</a></button>
+<a href="/verse_list">Start Game</a>
 </div>
 </div>
 
@@ -29,7 +29,7 @@ a{
   text-decoration: none;  
 }
 
-.page > button{
+.page > a {
     display: flex;
     padding:1rem 2rem;
     margin: auto;
@@ -42,7 +42,7 @@ a{
     text-decoration: none;
   }
 
-  button:hover{
+  .page > a:hover{
     background-color: #85d389;
     color: white;
     

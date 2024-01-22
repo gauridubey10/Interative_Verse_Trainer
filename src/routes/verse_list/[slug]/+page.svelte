@@ -7,7 +7,7 @@
   let verseData = data?.verse?.verse;
   let lastLevel = false;
   let previousVerse;
-
+  console.log("data for verse game..",data, verseData);
   $:{
     wordsArray = verseData.split(" ");
   }
@@ -133,7 +133,7 @@
 .VerseCard-Conatiner{
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   background-image: url("");
   background-size: cover;
   overflow: hidden;

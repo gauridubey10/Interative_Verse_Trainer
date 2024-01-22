@@ -4,6 +4,7 @@
      </script>
     
 
+  <div class="signup">
 <form method="post" action="?/signup">
   <div class="form-item">
     <label for="firstName">Firstname<sup><small>*</small></sup></label>
@@ -36,22 +37,36 @@
     <button type="submit" class="btn btn-primary">Sign Up</button>
   </div>
 </form>
-
+</div>
 
 <style>
-      form {
+
+.signup{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  margin: auto;
+  height: 90vh;
+  background-color: #FFE5E5 ;
+}
+    form {
     max-width: 400px;
+    min-width: 400px;
+    min-height: 40vh;
     margin: auto;
-    padding: 20px;
+    padding: 2rem;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color:white;
   }
 
   label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
+    font-size: 1rem;
   }
 
   input {
@@ -64,10 +79,14 @@
   button {
     background-color: #4caf50;
     color: white;
-    padding: 10px 15px;
+    padding: 1rem 2rem;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: auto;
+    width: 100%;
   }
 
   button:hover {

@@ -40,7 +40,10 @@
       background-color: #f6acac;
       margin: 0;
       min-height: 10vh;
-      position: sticky;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      border-bottom: px solid gray;
     }
     
     a{

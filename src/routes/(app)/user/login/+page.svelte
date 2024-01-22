@@ -52,9 +52,8 @@ $:{
 button{
     font-size: 1.5rem;
     margin: auto;
-    padding: 0.5rem 1rem;
-    border-radius: 1rem;
-    margin: 2rem;
+    width: 100%;
+    padding: 1rem 1rem;
     background-color: #a0dec9;
     border: 1px solid #a0dec9;
     box-shadow: 0 4px 8px rgba(198, 5, 5, 0.1);
@@ -68,7 +67,7 @@ button:hover{
 }
 
 .Login-main{
-    background-color:#f6acac ;
+    background-color: #FFE5E5;
     min-height: 100vh;
     display: flex;
 }
@@ -77,8 +76,8 @@ button:hover{
     background-color:#e29999 ;
     display: flex;
     flex-direction: column;
-    min-height: 60vh;
-    width: 40%;
+    min-height: 40vh;
+    width: 30%;
     margin: auto;
     border-radius: 2rem;
     font-size: 2rem;
@@ -98,6 +97,8 @@ button:hover{
 form{
     flex: 3 1;
     display: flex;
+    width: 90%;
+    margin: auto;
     flex-direction: column;
     font-size: 1.5rem;
     padding: 2rem 0;
@@ -114,7 +115,6 @@ form label{
 
 form input{
     padding: 0.5rem;
-    border-radius: 1rem;
     border: none;
     outline: none;
 }

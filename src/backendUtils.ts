@@ -1,7 +1,8 @@
-import type { Collection } from "mongodb";
+import { Collection } from "mongodb";
 // import type { User } from "./types/user";
 import bcrypt from 'bcrypt';
 import type { UserWithoutId } from "$db/types/user";
+import { user } from "./stores";
 
 
 export const returnAllUsers = async (collection:Collection)=>{
@@ -51,6 +52,27 @@ export  const findUserByUrl = async (collection:Collection,url:string)=>{
     return JSON.parse(JSON.stringify(User[0],(key,value) => key === "_id"? value.toString(value) : value))
 } 
 
+export const findUserVerseByEmail = async (collection:Collection,email:string)=>{
+    const projection = { email: 1, firstName: 1, verseData: 1, _id: 0 };
+    const user = await collection.find({ email: email }).project(projection).toArray();
+    
+    // Check if user is not empty and has verseData
+    const userData = user.length > 0 ? user[0] : null;
+    const userWithTransformedVerseData = userData
+      ? {
+          email: userData.email,
+          firstName: userData.firstName,
+          verseData: userData.verseData.map((verse:any) => ({
+            reference: verse.reference,
+            verse: verse.verse,
+          })),
+        }
+      : null;
+    
+    // Return the transformed user data
+    return userWithTransformedVerseData; 
+}
+
 export  const findUserByEmail = async (collection:Collection,email:string)=>{
     const projection = {email:1,firstName:1,_id:0 }
     const User = await collection.find({email:email}).project(projection).toArray();
@@ -80,7 +102,24 @@ export const updateUserPassword = async (collection:Collection,user:User)=>{
     );
     return result
 }
+export const updateUserVerseData = async (collection: Collection, userEmail: string , title:string, description:string) => {
+    console.log("useremail sefverr",userEmail);
+    const result = await collection.updateOne(
+      { email: userEmail }, // Change "email" to "userEmail" to match the case in your document
+      {
+        $push: {
+          verseData: {
+            reference: title,
+            verse: description
+          }
+        }
+      }
+    );
+    
+    
 
+    return result;
+  };
 export const setResetToken = async (collection:Collection,user:UserWithoutPassword)=>{
     const result = await collection.findOneAndUpdate(
         { email: user.email },

@@ -9,38 +9,45 @@ import { redirect } from '@sveltejs/kit';
 
 export async function load({ event }) {
   // Set event.locals.user to true
-  event.locals.user = true;
-  user.set(true);
+  event.locals.user = {
+    email: claims.email
+  }
+  // user.set(true);
+
 }
 
 export async function handle({event,resolve}) {
   const authToken = event.cookies.get('authToken');
     if(!authToken){
-       event.locals.authedUser = undefined;
+       event.locals.user = undefined;
        return await resolve(event)
       }
     const claims = jwt.verify(authToken,SECRET_INGREDIENT);
-    
-    if(!claims) event.locals.authedUser = undefined;
+    console.log("claim...",claims);
+    if(!claims){
+       event.locals.user = undefined;
+    }
   
-    // if(authToken && claims && event.url.pathname =='/user/login'){
-    //     const collection = await dbConn();
-    //     const fullUser = await findUserByEmail(collection,claims.email);
-    //     event.locals.user = {
-    //      user: fullUser.email
-    //     }
-    //     return await resolve(event)
-    //   //throw redirect(303 , '/verse_list');
+    if(authToken && claims && event.url.pathname =='/user/login'){
+        const collection = await dbConn();
+        const fullUser = await findUserByEmail(collection,claims.email);
+        event.locals.user = {
+         user: fullUser.email
+        }
+        return await resolve(event)
+      //throw redirect(303 , '/verse_list');
     
-    // }
+    }
 
-    // if(authToken && claims && event.url.pathname =='/verse_list'){
-    //   event.locals.user = {
-    //     user: true
-    //    }
-    // }
+    if(authToken && claims && event.url.pathname =='/verse_list'){
+      event.locals.user = {
+        user: true
+       }
+    }
 
-    event.locals.user = true;
+    event.locals.user = {
+      email: claims.email
+    }
 
     return await resolve(event)
  

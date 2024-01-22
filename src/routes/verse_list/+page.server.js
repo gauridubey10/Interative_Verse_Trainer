@@ -1,15 +1,32 @@
 // @ts-nocheck
 
+import { dbConn } from '../../../src/db/mongo.ts';
 import {verseData} from '$lib/verseData.js';
+import {findUserVerseByEmail } from '../../backendUtils.ts';
 
-export function load({locals}){
+export const load = async ({locals})=>{
  
+ if(locals?.user?.email){
+    const collection = await dbConn();
+    const user = await findUserVerseByEmail(collection ,locals.user.email);
     return {
-        user: locals.user,
+        user: locals?.user,
+        summaries: user.verseData.map((verse)=>({
+            slug: verse.reference,
+            title: verse.reference
+
+        }))
+    };
+  }
+  else{
+    console.log("dummy data");
+    return {
+        user: undefined,
         summaries: verseData.map((verse)=>({
             slug: verse.reference,
             title: verse.reference
 
         }))
     };
+  }
 }

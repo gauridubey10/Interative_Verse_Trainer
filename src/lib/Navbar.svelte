@@ -9,7 +9,7 @@
       $:thisUser = $user;
       console.log("user from store",$user );
        if($user)count_value = 1;
-       console.log("navbR...",$page.data , $page.data.user);
+      // console.log("navbR...",$page.data , $page.data.user);
     </script>
     
     <header>

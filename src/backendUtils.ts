@@ -102,8 +102,9 @@ export const updateUserPassword = async (collection:Collection,user:User)=>{
     );
     return result
 }
-export const updateUserVerseData = async (collection: Collection, userEmail: string , title:string, description:string) => {
+export const createUserVerseData = async (collection: Collection, userEmail: string , title:string, description:string) => {
     console.log("useremail sefverr",userEmail);
+    if(title == '' || description == "")return 404;
     const result = await collection.updateOne(
       { email: userEmail }, // Change "email" to "userEmail" to match the case in your document
       {
@@ -115,11 +116,22 @@ export const updateUserVerseData = async (collection: Collection, userEmail: str
         }
       }
     );
-    
-    
-
     return result;
   };
+
+  export const updateUserVerseData = async (collection: Collection, userEmail: string , title:string, description:string) => {
+    console.log("useremail sefverr",userEmail , title , description);
+    const result = await collection.updateOne(
+      { email: userEmail }, // Change "email" to "userEmail" to match the case in your document
+      {
+          verseData: {
+            reference: title,
+            verse: description
+          }
+      }
+    );
+    return result;
+  }; 
 export const setResetToken = async (collection:Collection,user:UserWithoutPassword)=>{
     const result = await collection.findOneAndUpdate(
         { email: user.email },

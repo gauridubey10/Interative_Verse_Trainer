@@ -13,8 +13,9 @@ export const load = async ({locals})=>{
         user: locals?.user,
         summaries: user.verseData.map((verse)=>({
             slug: verse.reference,
-            title: verse.reference
-
+            title: verse.reference,
+            description: verse.verse
+            
         }))
     };
   }
@@ -24,8 +25,8 @@ export const load = async ({locals})=>{
         user: undefined,
         summaries: verseData.map((verse)=>({
             slug: verse.reference,
-            title: verse.reference
-
+            title: verse.reference,
+            description: verse.verse
         }))
     };
   }

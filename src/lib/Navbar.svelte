@@ -15,18 +15,18 @@
     <header>
       <nav>
         <div class="page-icon">
-          <a href="/">Interactive Verse Trainer</a>
+          <a href="/">Verse Trainer</a>
         </div>
          {#if $page.url.pathname != '/user/login'}
         <div class="Header-button">
            <ul>
             {#if ! $page.data.user}
-            <button><li><a href="/user/login">login</a></li></button>
+            <button class="button-91"><li><a href="/user/login">login</a></li></button>
             {#if $page.url.pathname != '/user/signup'}
-            <button><li><a href="/user/signup"> Register</a></li></button>
+            <button class="button-91"><li><a href="/user/signup"> Register</a></li></button>
             {/if}
             {:else}
-            <button><li><a href="/user/logout">Logout</a></li></button>
+            <button class="button-91"><li><a href="/user/logout">Logout</a></li></button>
             {/if}
            </ul>
         </div>
@@ -35,15 +35,38 @@
     </header>
     
     <style>
+
+
+.button-91 {
+  color: #fff;
+   padding: 0.5rem 1rem;
+  background-color: #227878;
+  background-image: radial-gradient(93% 87% at 87% 89%, rgba(0, 0, 0, 0.23) 0%, transparent 86.18%), radial-gradient(66% 66% at 26% 20%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%);
+  box-shadow: inset -3px -3px 9px rgba(255, 255, 255, 0.25), inset 0px 3px 9px rgba(255, 255, 255, 0.3), inset 0px 1px 1px rgba(255, 255, 255, 0.6), inset 0px -8px 36px rgba(0, 0, 0, 0.3), inset 0px 1px 5px rgba(255, 255, 255, 0.6), 2px 19px 31px rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  font-weight: bold;
+  font-size: 1.2rem;
+
+  border: 0;
+
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+
+  cursor: pointer;
+}  
     
     header{
-      background-color: #f6acac;
       margin: 0;
       min-height: 10vh;
       position: fixed;
       top: 0;
       width: 100%;
-      border-bottom: px solid gray;
+      border-bottom: 1px solid darkslategrey;
+      background-color: darkslategrey;
+      box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+      /* border-bottom: px solid gray; */
     }
     
     a{
@@ -65,7 +88,7 @@
     }
     
     button:hover{
-      background-color:  rgb(179, 126, 229);
+      background-color: #144545;
     }
     
     nav{
@@ -78,12 +101,15 @@
     }
     
     .page-icon{
-      font-size: 2rem;
+      font-family: 'Great Vibes', cursive;
+      font-size: 3rem;
+      font-weight: 400;
+      padding: 1rem 0 1rem 0;
       flex: 1 1 ;
     }
     
     .page-icon a{
-      color: black;
+      color: white;
     }
     
     .Header-button{

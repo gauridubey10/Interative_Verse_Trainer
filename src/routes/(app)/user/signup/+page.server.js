@@ -4,6 +4,7 @@ import { fail, redirect } from "@sveltejs/kit"
 import { dbConn } from '../../../../db/mongo';
 import { registerUser ,registerFormToUserWithoutId ,returnEmailsList} from '../../../../backendUtils.ts';
 import { checkPassword } from '../../../../passwordCheck';
+import { verseData } from "$lib/verseData";
 
 
 export async function load({cookies}){
@@ -26,7 +27,8 @@ export const actions = {
         firstName,
         lastName,
         email,
-        password: ''
+        password: '',
+        verseData: verseData
     }
 
     const isPassStrong = checkPassword(password.toString());

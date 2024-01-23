@@ -1,4 +1,5 @@
 <script>
+
 // @ts-nocheck
 
 
@@ -11,7 +12,17 @@
   let isEditModalVisible = false;
   let modalOpacity = 1;
   let editModalOpacity = 1;
+  let editModalBindings = [];
   const userEmail = data.user.email;
+  let Index1;
+
+  function initializeModalBindings() {
+    // Initialize modal bindings for each summary
+
+    editModalBindings = data.summaries.map((item) => ({ title: item.title, description: item.description , verseId: item.verseId }));
+  }
+
+  initializeModalBindings();
 
   function openModal() {
     isModalVisible = true;
@@ -28,25 +39,36 @@
     }
   });
 		let result = await response.json();
-    console.log("result of adding new verse",result);
     isModalVisible = false;
-    data.summaries = [...data.summaries , {slug:title , title:title , description:description}]
+    updateDataSummaries(result);
 }
 	}
 
+  const updateDataSummaries=(result)=>{
+    let  updateVerseData = result.user.verseData.map((verse)=>({
+            slug: verse.reference,
+            title: verse.reference,
+            description: verse.verse,
+            verseId: verse.verseId
+            
+        }));
+        data.summaries = updateVerseData;
+        initializeModalBindings();
+  }
+
   async function editVerseData() {
-    console.log("edit verse title , descritipn ", title,description);
+    const { title, description , verseId } = editModalBindings[Index1];
 		const response = await fetch('/verse_list',{
     method: 'PUT',
-    body: JSON.stringify({title,description ,userEmail}),
+    body: JSON.stringify({title,description ,userEmail , verseId}),
     headers:{
       'Content-Type': 'application/json'
     }
   });
 		let result = await response.json();
-    console.log("result of adding new verse",result);
     isModalVisible = false;
-    data.summaries = [...data.summaries , {slug:title , title:title}]
+    if(result)
+    updateDataSummaries(result);
 	}
 
   async function handleSubmit(type) {
@@ -55,17 +77,37 @@ if(type == "create"){
     isModalVisible = false;
     }
     else if(type == "update"){
-    console.log("titilelelel...",title,description);
     editVerseData()
     isEditModalVisible = false;
     }
   }
 
-    function openEditModal(){
+
+    function openEditModal(index){
+      Index1 = index;
       isEditModalVisible = true;
       editModalOpacity = 1;
+      initializeModalBindings();
     }
 
+     async function handleDelete(index){
+      Index1 = index;
+      const { verseId } = editModalBindings[Index1];
+     
+       console.log("deletee clicked");
+        
+       const response = await fetch('/verse_list',{
+    method: 'delete',
+    body: JSON.stringify({userEmail , verseId}),
+    headers:{
+      'Content-Type': 'application/json'
+    }
+   });
+     console.log("response ... delete",response);
+     let result = await response.json();
+    updateDataSummaries(result);
+
+    }
 </script>
 
 
@@ -75,8 +117,8 @@ if(type == "create"){
    
   {#if data.user}
   <div class="verse_add_Button">
-    <button on:click={openModal}>Open Modal</button>
-    {#if isModalVisible}
+    <button on:click={openModal}>Add verse</button>
+  {#if isModalVisible}
     <div class="modal" style="opacity: {modalOpacity}">
       <div class="modal-content">
         <button type="button" class="close" on:click={() => (isModalVisible = false)}>
@@ -97,9 +139,26 @@ if(type == "create"){
   {/if}
   </div>
   {/if}
+
+  {#if isEditModalVisible}
+  <div class="modal" style="opacity: {editModalOpacity}">
+    <div class="modal-content">
+      <button type="button" class="close" on:click={() => (isEditModalVisible = false)}>&times;</button>
+      <h2>update Verse Details</h2>
+      <form on:submit|preventDefault={() =>handleSubmit("update")}>
+        <label for="title">Title: </label>
+        <textarea id="title" bind:value={editModalBindings[Index1].title} required/>
+
+        <label for="description">Description: </label>
+        <textarea id="description" bind:value={editModalBindings[Index1].description} required></textarea>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+  {/if}
   <div class="verse-list">
-  {#each data.summaries as {slug, title , description }}
-  <!-- {console.log("data ....",slug,title,description)} -->
+  {#each data.summaries as {slug, title , description , verseId }, index (verseId)}
   <div class="eachVerse_Container">
   <div class="verselist_title">
   <a href="/verse_list/{slug}">
@@ -107,28 +166,8 @@ if(type == "create"){
   </a>
   </div>
   <div class="verselist_option">
-  <button on:click={openEditModal}>Edit</button>
-  {console.log(title,description,".........")}
-  {#if isEditModalVisible}
-    <div class="modal" style="opacity: {editModalOpacity}">
-      <div class="modal-content">
-        <button type="button" class="close" on:click={() => (isEditModalVisible = false)}>
-          &times;
-        </button>
-        <h2>update Verse Details</h2>
-        <form on:submit|preventDefault={() =>handleSubmit("update")}>
-          <label for="title">Title: </label>
-          <textarea id="title" bind:value={title} required/>
-
-          <label for="description">Description: </label>
-          <textarea id="description" bind:value={description} placeholder={description} required></textarea>
-
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    </div>
-  {/if}
-  <button on:click={()=>console.log("delete button clicked")}>delete</button>
+  <button on:click={()=>openEditModal(index)}>Edit</button>
+  <button on:click={()=>handleDelete(index)}>delete</button>
  </div>
 </div>
   

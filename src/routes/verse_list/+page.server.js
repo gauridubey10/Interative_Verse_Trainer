@@ -6,31 +6,27 @@ import {findUserVerseByEmail } from '../../backendUtils.ts';
 
 export const load = async ({locals})=>{
 
- console.log("locals value.....",locals);
  if(locals?.user?.email){
     const collection = await dbConn();
     const user = await findUserVerseByEmail(collection ,locals.user.email);
-    console.log("user vvv",user);
     return {
         user: locals?.user,
         summaries: user.verseData.map((verse)=>({
-            slug: verse.reference,
+            slug: verse. _id,
             title: verse.reference,
             description: verse.verse,
-            verseId: verse.verseId
-            
+            verseId: verse._id   
         }))
     };
   }
   else{
-    console.log("dummy data" );
     return {
         user: undefined,
         summaries: verseData.map((verse)=>({
-            slug: verse.reference,
+            slug: verse. _id,
             title: verse.reference,
             description: verse.verse,
-            verseId: verse.verseId
+            verseId: verse._id
         }))
     };
   }

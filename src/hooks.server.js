@@ -18,7 +18,6 @@ export async function load({ event }) {
 
 export async function handle({event,resolve}) {
   const authToken = event.cookies.get('authToken');
-  console.log("authToken", authToken);
     if(!authToken){
        event.locals.user = undefined;
        return await resolve(event)
@@ -33,12 +32,7 @@ export async function handle({event,resolve}) {
           throw redirect(302,'/user/login');
         }
       }
-    // console.log("claim.......",claims);
-    // if(!claims){
-    //    event.locals.user = undefined;
-    // }
-   
-  
+
     if(authToken && claims && event.url.pathname =='/user/login'){
         const collection = await dbConn();
         const fullUser = await findUserByEmail(collection,claims.email);

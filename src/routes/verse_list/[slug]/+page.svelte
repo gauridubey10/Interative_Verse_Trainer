@@ -7,7 +7,6 @@
   let verseData = data?.verse?.verse;
   let lastLevel = false;
   let previousVerse;
-  console.log("data for verse game..",data, verseData);
   $:{
     wordsArray = verseData.split(" ");
   }
@@ -21,7 +20,6 @@
         updatedVerse = checkTrailingLetterRemoved() ?replaceLettersInParagraph(updatedVerse, true , false):replaceLettersInParagraph(updatedVerse, false , true) ;
     }
     wordsArray = updatedVerse.split(" ");
-    console.log(level,updatedVerse);
     verseData = updatedVerse;
   };
   
@@ -73,13 +71,11 @@
   }
 
   const handleNextButton = () => {
-    console.log("NEXT CLICKKED");
     level = level + 1;
     removeTrailingLetter();
   };
 
   const handlePrevButton = () => {
-    console.log("Prev CLICKKED");
     verseData = data?.verse?.verse;
     removeTrailingLetter();
     level = 1;
@@ -87,13 +83,11 @@
   };
 
   const handleShowButton = () => {
-    console.log("Show CLICKKED");
     previousVerse = verseData;
     verseData = data?.verse?.verse;
   };
 
   const handleShowMouseLeave = () =>{
-    console.log("mouse leave");
     verseData = previousVerse;
   }
 
@@ -118,11 +112,21 @@
 
   <div class="Button-Container">
     <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-    <button class="ShowButton" on:mouseover={handleShowButton} on:mouseleave={handleShowMouseLeave}>Show</button>
+    <button class="ShowButton button-91" on:mouseover={handleShowButton} on:mouseleave={handleShowMouseLeave}>Show</button>
     <div class="LevelButton-Container">
-      <button class="Prev" on:click={handlePrevButton} disabled={level == 1}>Prev</button>
+      <button class="Prev button-91" on:click={handlePrevButton} disabled={level == 1}>
+        <span class="material-symbols-outlined">
+          keyboard_backspace
+          </span></button>
       <div class="Level">Level {level}</div>
-      <button class="Next" on:click={handleNextButton} disabled={lastLevel}>Next</button>
+      <button class="next button-91" on:click={handleNextButton} disabled={lastLevel}>
+         <span class="material-symbols-outlined">
+          arrow_right_alt
+          </span> 
+        </button>
+      <!-- <span class="Next material-symbols-outlined  button-91" on:click={handleNextButton} disabled={lastLevel}>
+        arrow_right_alt
+        </span> -->
     </div>
   </div>
 </div>
@@ -132,13 +136,18 @@
 
 .VerseCard-Conatiner{
   display: flex;
+  position: absolute;
+  top: 10vh;
+  width: 100%;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 90vh;
   background-image: url("");
   background-size: cover;
   overflow: hidden;
   background-position: center;
-  background-color: #FFE5E5;
+  /* background-color: #FFE5E5; */
+  background-color: rgb(75, 121, 121 , 0.5);
+
   justify-content: center;
   align-items: center;
 }
@@ -157,19 +166,41 @@
 
 }
 
+.button-91 {
+  color: #fff;
+  padding: 15px 25px;
+  /* background-color: #789461; */
+  background-color: #3ac08e;
+  background-image: linear-gradient(102deg, #3ac08e 0%, #789461 100%);
+
+  background-image: radial-gradient(93% 87% at 87% 89%, rgba(0, 0, 0, 0.23) 0%, transparent 86.18%), radial-gradient(66% 66% at 26% 20%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%);
+  box-shadow: inset -3px -3px 9px rgba(255, 255, 255, 0.25), inset 0px 3px 9px rgba(255, 255, 255, 0.3), inset 0px 1px 1px rgba(255, 255, 255, 0.6), inset 0px -8px 36px rgba(0, 0, 0, 0.3), inset 0px 1px 5px rgba(255, 255, 255, 0.6), 2px 19px 31px rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  font-weight: bold;
+  font-size: 16px;
+
+  border: 0;
+
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+
+  cursor: pointer;
+}
+
   button{
     display: flex;
-    margin: 1rem;
+    /* margin: 1rem; */
     padding: 1rem 2.5rem;
     border: 1px solid #FFE5E5;
     border-radius: 1rem;
     font-size: 1.5rem;
-    background-color: #85d389;
+    background-color: #365d37;
     cursor: pointer;
   }
 
   button:hover{
-    background-color: #A8DF8E;
+    background-color:#258763;;
     color: white;
     
   }
@@ -218,18 +249,23 @@
     flex-direction: columns;
     border: 2px solid skyblue;
     margin-right: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 
   .letter-box {
-    width: 40px;
-    height: 40px;
-    margin: 5px;
+    width: 30px;
+    height: 30px;
+    margin: 0px;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 1px solid #ccc;
     font-size: 18px;
     flex-direction: columns;
+  }
+
+  .next{
+    display: flex;
+    align-items: center;
   }
 </style>

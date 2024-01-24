@@ -60,7 +60,6 @@ export const findUserVerseByEmail = async (collection:Collection,email:string)=>
     
     // Check if user is not empty and has verseData
     const userData = user.length > 0 ? user[0] : null;
-    console.log("user Data...",user);
     const userWithTransformedVerseData = userData && userData.verseData
       ? {
           email: userData.email,
@@ -68,7 +67,7 @@ export const findUserVerseByEmail = async (collection:Collection,email:string)=>
           verseData: userData.verseData.map((verse:any) => ({
             reference: verse.reference,
             verse: verse.verse,
-            verseId: verse._id
+            _id: verse._id
           })),
         }
       : null;

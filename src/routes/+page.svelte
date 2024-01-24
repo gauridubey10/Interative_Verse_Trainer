@@ -55,10 +55,10 @@
   position: absolute;
    top: 10vh;
    width: 100%;
-    height: 90vh;
-    margin: auto;
-    background-color: rgb(75, 121, 121 , 0.5);
-    background-repeat: no-repeat;
+   height: 90vh;
+   margin: auto;
+   background-color: rgb(75, 121, 121 , 0.5);
+   background-repeat: no-repeat;
    
 }
 
@@ -77,7 +77,7 @@
 a{
   text-decoration: none;  
 }
-
+ 
 .page > a {
     display: flex;
     padding:1rem 2rem;

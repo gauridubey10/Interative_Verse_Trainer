@@ -40,9 +40,9 @@ $:{
     
     <button type="submit">Sign In</button>
 
-    <div class="form-item">
+    <!-- <div class="form-item">
         <a class="reset-link" href="/forgotPassword"><small>Forgot Password?</small></a>
-    </div>
+    </div> -->
   </form>
 </div>
 </div>
@@ -67,13 +67,13 @@ button:hover{
 }
 
 .Login-main{
-    background-color: #FFE5E5;
+    background-color:rgb(75, 121, 121 , 0.5);
     min-height: 100vh;
     display: flex;
 }
 
 .login-container{
-    background-color:#e29999 ;
+    background-color:rgb(75, 121, 121 , 0.5);
     display: flex;
     flex-direction: column;
     min-height: 40vh;
@@ -82,7 +82,8 @@ button:hover{
     border-radius: 2rem;
     font-size: 2rem;
     padding: 2rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    box-shadow:5px 5px 10px rgb(77, 88, 99) ,0 0 10px rgba(0, 0, 0, 0.3) ;
     text-align: center;
 }
 

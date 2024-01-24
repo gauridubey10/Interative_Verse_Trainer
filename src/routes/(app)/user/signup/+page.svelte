@@ -5,6 +5,9 @@
     
 
   <div class="signup">
+  <div class="form-box">
+<div class="container-header">Sign Up</div>
+<div class="form-container">
 <form method="post" action="?/signup">
   <div class="form-item">
     <label for="firstName">Firstname<sup><small>*</small></sup></label>
@@ -38,28 +41,42 @@
   </div>
 </form>
 </div>
+</div>
+</div>
 
 <style>
 
 .signup{
   display: flex;
+  position: absolute;
+  top: 10vh;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
   align-content: center;
   margin: auto;
   height: 90vh;
-  background-color: #FFE5E5 ;
+  /* background-color: #FFE5E5 ; */
+  background-color:rgb(75, 121, 121 , 0.5)
 }
-    form {
+
+.container-header{
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+
+.form-box {
     max-width: 400px;
     min-width: 400px;
     min-height: 40vh;
     margin: auto;
     padding: 2rem;
-    border: 1px solid #ccc;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color:white;
+    box-shadow:5px 5px 10px rgb(77, 88, 99) ,0 0 10px rgba(0, 0, 0, 0.3) ;
+    background-color:rgb(75, 121, 121 , 0.5)
   }
 
   label {

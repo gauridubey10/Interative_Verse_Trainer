@@ -5,6 +5,9 @@ import { dbConn } from '../../../../db/mongo';
 import { registerUser ,registerFormToUserWithoutId ,returnEmailsList} from '../../../../backendUtils.ts';
 import { checkPassword } from '../../../../passwordCheck';
 import { verseData } from "$lib/verseData";
+import jwt from 'jsonwebtoken';
+import { SECRET_INGREDIENT } from '$env/static/private';
+import { user } from "../../../../stores";
 
 
 export async function load({cookies}){
@@ -65,7 +68,12 @@ export const actions = {
   const userToInsert = await registerFormToUserWithoutId(SignUpResponse);
   const resultOfInsert = await registerUser(collection,userToInsert);
   console.log("user inserted",resultOfInsert , );
-  if(resultOfInsert.acknowledged && resultOfInsert.insertedId) throw redirect(303,`/verse_list`);
+  if(resultOfInsert.acknowledged && resultOfInsert.insertedId){ 
+    const authToken = jwt.sign({ email: email },SECRET_INGREDIENT,{expiresIn:'24h'});
+    cookies.set('authToken',authToken , { path: '/' });
+    user.set(email)
+    throw redirect(303,`/verse_list`);
+  }
   SignUpResponse.password = '';
   SignUpResponse.error = true;
   SignUpResponse.message = "Error registering user!";

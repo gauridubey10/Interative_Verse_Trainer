@@ -58,14 +58,16 @@
     
     header{
       margin: 0;
-      min-height: 10vh;
+      height: 10vh;
       position: fixed;
+      padding-bottom: 1rem;
       top: 0;
       width: 100%;
       border-bottom: 1px solid darkslategrey;
       background-color: darkslategrey;
       box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.1);
       z-index: 1;
+      flex-wrap: wrap;
       /* border-bottom: px solid gray; */
     }
     

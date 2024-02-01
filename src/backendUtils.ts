@@ -1,24 +1,9 @@
 import { Collection } from "mongodb";
-// import type { User } from "./types/user";
 import bcrypt from 'bcrypt';
 import type { UserWithoutId } from "$db/types/user";
-import { user } from "./stores";
 import { v4 as uuidv4 } from 'uuid';
 import { verseData } from "$lib/verseData";
 
-
-export const returnAllUsers = async (collection:Collection)=>{
-    const Users = await collection.find().toArray();
-    //console.log("Result",Users);
-    return Users
-} 
-
-export const returnURLsList = async (collection:Collection):Promise<string[]>=>{
-    const projection = {URL:1,_id:0}
-    const users = await collection.find().project(projection).toArray();
-    const userList:string[] = users.map((user) => user.URL)
-    return userList.sort()
-} 
 
 export const returnEmailsList = async (collection:Collection):Promise<string[]>=>{
     const projection = {email:1,_id:0}
@@ -32,15 +17,6 @@ export const registerUser = async (collection:Collection,user:UserWithoutId)=>{
     return register
 }
 
-// export const bulkAddUsers = async (collection:Collection,users:UserWithoutId[])=>{
-//     const register = await collection.insertMany(users);
-//     return register
-// }
-
-// export const deleteAll = async (collection:Collection)=>{
-//     const deleteMany = await collection.deleteMany();
-//     return deleteMany
-// }
 
 export const findUserById = async (collection:Collection)=>{
     const Users = await collection.find().toArray();
@@ -48,11 +24,6 @@ export const findUserById = async (collection:Collection)=>{
     return Users
   } 
 
-// export  const findUserByUrl = async (collection:Collection,url:string)=>{
-//     const User = await collection.find({URL:url}).toArray();
-//     //console.log("Result",User[0]);
-//     return JSON.parse(JSON.stringify(User[0],(key,value) => key === "_id"? value.toString(value) : value))
-// } 
 
 export const findUserVerseByEmail = async (collection:Collection,email:string)=>{
     const projection = { email: 1, firstName: 1, verseData: 1, _id: 1 };
@@ -86,25 +57,11 @@ export  const findUserByEmail = async (collection:Collection,email:string)=>{
 export  const findUserByEmailWithPassword = async (collection:Collection,email:string)=>{
     const projection = {email:1,_id:0,password:1, URL:1,resetTimer:1}
     const User = await collection.find({email:email}).project(projection).toArray();
-    //console.log("Email Find Result",User[0]);
+    console.log("Email Find Result",User[0]);
+    if(!User[0])return "User Not Found";
     return JSON.parse(JSON.stringify(User[0],(key,value) => key === "_id"? value.toString(value) : value))
 } 
 
-// export const updateUserAdminOptions = async (collection:Collection,user:UserWithoutPassword)=>{
-//     const result = await collection.findOneAndUpdate(
-//         { email: user.email },
-//         { $set: {options:user.options,palette:user.palette} },
-//     );
-//     return result
-// }
-
-export const updateUserPassword = async (collection:Collection,user:User)=>{
-    const result = await collection.findOneAndUpdate(
-        { email: user.email },
-        { $set: {resetToken:undefined ,password:user.password} },
-    );
-    return result
-}
 export const createUserVerseData = async (collection: Collection, userEmail: string , title:string, description:string) => {
     console.log("useremail sefverr",userEmail);
     if(title == '' || description == "")return 404;
@@ -161,19 +118,6 @@ export const createUserVerseData = async (collection: Collection, userEmail: str
     console.log("result",result);
     return result;
   }; 
-
-// export const setResetToken = async (collection:Collection,user:UserWithoutPassword)=>{
-//     const result = await collection.findOneAndUpdate(
-//         { email: user.email },
-//         { $set: {resetTimer:user.resetTimer} },
-//     );
-//     return result
-// }
-
-// export const CheckUserStyledPage = (url:string) => {
-//     const nonUserStyledRoutes = ['', '/', '/signup', '/login','resetPassword'];
-//     return !nonUserStyledRoutes.includes(url);
-//   };
 
 export  const registerFormToUserWithoutId = async (form:any) =>{
     const hashedPassword = await bcrypt.hash(form.password,12);

@@ -2,8 +2,7 @@
 // @ts-nocheck
 
  
- import { enhance } from '$app/forms';
-  import { user } from '../../../../stores.js';
+import { user } from '../../../../stores.js';
 export let form;
 export let data;
 
@@ -120,7 +119,26 @@ form input{
     outline: none;
 }
 
+@media only screen and (max-width: 767px) {
+   
+    .form-header{
+    flex: 1 1;
+}
 
+.login-container{
+    min-height: 40vh;
+    width: 70%;
+    margin: auto;
+    border-radius: 2rem;
+    font-size: 1rem;
+    padding: 2rem;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    box-shadow:5px 5px 10px rgb(77, 88, 99) ,0 0 10px rgba(0, 0, 0, 0.3) ;
+    text-align: center;
+}
+
+    
+}
 
 
 

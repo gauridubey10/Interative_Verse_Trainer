@@ -6,7 +6,6 @@
 
 <div class="Start-Page">
   <div class="leaf-image">
-    <!-- Replace 'your-leaf-image.jpg' with the actual URL or path to your leaf image -->
     <img src={imagePath} alt="Leaf Image">
   </div>
 <div class="page ">
@@ -98,5 +97,10 @@ a{
     
   }
 
+  @media only screen and (max-width: 767px) {
+    .page > a {
+    font-size: 2rem;
+  }
+  }
 
 </style>

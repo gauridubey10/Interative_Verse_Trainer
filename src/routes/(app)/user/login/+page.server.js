@@ -30,7 +30,13 @@ export const actions = {
  
     const collection = await dbConn();
     const userAttemptingLogin = await findUserByEmailWithPassword(collection,email);
+    if(userAttemptingLogin == "User Not Found"){
+      loginResponse.error = true,
+      loginResponse.message = "Invalid username or password!";
+      return loginResponse
+    }
 
+    console.log("pasword email login",userAttemptingLogin);
     const authAttempt = await brcyptjs.compare(password,userAttemptingLogin.password);
     if(!authAttempt){
         loginResponse.error = true,

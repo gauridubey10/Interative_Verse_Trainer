@@ -9,7 +9,6 @@
       $:thisUser = $user;
       console.log("user from store",$user );
        if($user)count_value = 1;
-      // console.log("navbR...",$page.data , $page.data.user);
     </script>
     
     <header>
@@ -22,9 +21,6 @@
            <ul>
             {#if ! $page.data.user}
             <button class="button-91"><li><a href="/user/login">login</a></li></button>
-            {#if $page.url.pathname != '/user/signup'}
-            <button class="button-91"><li><a href="/user/signup"> Register</a></li></button>
-            {/if}
             {:else}
             <button class="button-91"><li><a href="/user/logout">Logout</a></li></button>
             {/if}
@@ -120,7 +116,44 @@
       flex: 1 1 ;  
       justify-content:flex-end;
     }
+
+    @media only screen and (max-width: 767px) {
+
+    .page-icon{
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      font-weight: 400;
+      padding: 1rem 0 1rem 0;
+      flex: 1 1 ;
+    }
+
+    nav{
+      display: flex;
+      width: 90%;
+      margin: auto;
+      min-height: 10vh;
+      justify-content: center;
+      align-items: center;
+    }
+
+    header{
+      margin: 0;
+      height: 8vh;
+      position: fixed;
+      padding-bottom: 1rem;
+      top: 0;
+      width: 100%;
+      border-bottom: 1px solid darkslategrey;
+      background-color: darkslategrey;
+      box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+      flex-wrap: wrap;
+      /* border-bottom: px solid gray; */
+    }
+
+    }
     
+
     
     
     

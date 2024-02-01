@@ -113,4 +113,14 @@
   .fieldError{
         outline: 2px solid #ff0000;
     }
+
+
+    @media only screen and (max-width: 767px) {
+    
+
+      .form-box {
+    max-width: 50%;
+    min-width: 70%;
+  }
+    }
 </style>

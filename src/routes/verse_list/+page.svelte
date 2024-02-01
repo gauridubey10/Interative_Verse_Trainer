@@ -420,7 +420,24 @@ h2{
     color: gray;
   }
 
+  @media only screen and (max-width: 767px) {
 
+
+    .page_title{
+  font-size: 2rem;
+   }
+
+   .verse-list{
+   width: 100%;
+   min-width: 10%;
+   padding: 1rem 0px;
+}
+
+.verselist_title > a{
+  width:13rem;
+}
+
+  }
 
 
 

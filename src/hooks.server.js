@@ -3,9 +3,10 @@
 
 import { dbConn } from '$db/mongo';
 import jwt from 'jsonwebtoken';
-import { findUserByEmail } from './backendUtils';
+import { findUserByEmail , findUserVerseByEmail} from './backendUtils';
 import { SECRET_INGREDIENT } from '$env/static/private';
 import { redirect } from '@sveltejs/kit';
+import { user } from './stores';
 
 export async function load({ event }) {
   // Set event.locals.user to true
@@ -36,8 +37,10 @@ export async function handle({event,resolve}) {
     if(authToken && claims && event.url.pathname =='/user/login'){
         const collection = await dbConn();
         const fullUser = await findUserByEmail(collection,claims.email);
+        const userVerse = await findUserVerseByEmail(collection ,locals.user.email);
         event.locals.user = {
-         user: fullUser.email
+         user: fullUser.email,
+         verse: userVerse.verseData
         }
         return await resolve(event)
       //throw redirect(303 , '/verse_list');
@@ -49,9 +52,12 @@ export async function handle({event,resolve}) {
         user: true
        }
     }
+    const collection = await dbConn();
+    const userVerse = await findUserVerseByEmail(collection ,claims.email);
 
     event.locals.user = {
-      email: claims.email
+      email: claims.email,
+      verse: userVerse.verseData
     }
 
     return await resolve(event)

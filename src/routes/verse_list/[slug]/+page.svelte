@@ -268,4 +268,19 @@
     display: flex;
     align-items: center;
   }
+
+
+  @media only screen and (max-width: 767px) {
+
+  .letter-box {
+    width: 15px;
+    height: 15px;
+    font-size: 10px;
+  }
+
+  .word-box {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}
 </style>

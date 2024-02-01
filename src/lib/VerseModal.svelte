@@ -9,18 +9,6 @@
 
     let number;
     const userEmail =$page.data.user.email;
-  // async function saveVerseData() {
-	// 	const response = await fetch('/verse_list',{
-  //   method: 'POST',
-  //   body: JSON.stringify({title,description , userEmail}),
-  //   headers:{
-  //     'Content-Type': 'application/json'
-  //   }
-  // });
-	// 	number = await response.json();
-  //   console.log("numberrr verse update data...",number , title,description);
-	// }
-  
    async function handleSubmit() {
     saveVerseData()
       // Close the modal after submission

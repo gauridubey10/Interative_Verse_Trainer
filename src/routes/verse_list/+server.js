@@ -1,5 +1,4 @@
 // @ts-nocheck
-import { dbConn } from '../../db/mongo.ts';
 import { json } from '@sveltejs/kit';
 import {createUserVerseData, updateUserVerseData , findUserVerseByEmail , deleteUserVerseData} from '../../backendUtils.ts';
 
@@ -12,10 +11,9 @@ export function GET() {
 
 export async function POST({ request, cookies }) {
 	const {title , description , userEmail} = await request.json();
-	const collection = await dbConn();
-    const result = await createUserVerseData(collection ,userEmail , title,description);
-	if(result.acknowledged){
-	const user = await findUserVerseByEmail(collection ,userEmail);
+    const result = await createUserVerseData(userEmail , title,description);
+	if(result){
+	const user = await findUserVerseByEmail(userEmail);
 
 	return json({ user }, { status: 201 });
 }

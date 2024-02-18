@@ -1,18 +1,10 @@
-import { Collection } from "mongodb";
 import bcrypt from 'bcryptjs';
-import type { UserWithoutId } from "$db/types/user";
-import { v4 as uuidv4 } from 'uuid';
 import { verseData } from "$lib/verseData";
 import * as edgedb from "edgedb";
 const client = edgedb.createClient();
 
-
-
 export const returnEmailsList = async ():Promise<any>=>{
-    // const projection = {email:1,_id:0}
-    // const users = await collection.find().project(projection).toArray();
-    // const emailList:string[] = users.map((user) => user.email.toString())
-    // return emailList
+
     const email = await client.query(
       `select User {
         email
@@ -67,13 +59,6 @@ export const findUserVerseByEmail = async (email:string)=>{
       }
   } FILTER .email = "${email}";`
   );
-  // console.log(JSON.stringify(user))
-  
-
-    // const projection = { email: 1, firstName: 1, verseData: 1, _id: 1 };
-    // const user = await collection.find({ email: email }).project(projection).toArray();
-    
-    // Check if user is not empty and has verseData
     const userData = user.length > 0 ? user[0] : null;
     const userWithTransformedVerseData = userData && userData.verseData
       ? {
@@ -86,8 +71,6 @@ export const findUserVerseByEmail = async (email:string)=>{
           })),
         }
       : null;
-      // console.log(JSON.stringify(userWithTransformedVerseData))
-    // Return the transformed user data
     return userWithTransformedVerseData; 
 }
 
@@ -111,29 +94,26 @@ export  const findUserByEmailWithPassword = async (email:string)=>{
       password,
   } FILTER .email = 'gauri@gmail.com';`
   );
-    // const projection = {email:1,_id:0,password:1, URL:1,resetTimer:1}
-    // const User = await collection.find({email:email}).project(projection).toArray();
-    console.log("Email Find Result",User[0]);
     if(!User[0])return "User Not Found";
     return User[0];
-    // return JSON.parse(JSON.stringify(User[0],(key,value) => key === "_id"? value.toString(value) : value))
 } 
 
-export const createUserVerseData = async (collection: Collection, userEmail: string , title:string, description:string) => {
-    console.log("useremail sefverr",userEmail);
+export const createUserVerseData = async ( userEmail: string , title:string, description:string) => {
     if(title == '' || description == "")return 404;
-    const result = await collection.updateOne(
-      { email: userEmail }, // Change "email" to "userEmail" to match the case in your document
-      {
-        $push: {
-          verseData: {
-            _id: uuidv4(),
-            reference: title,
-            verse: description
-          }
-        }
+    const result = await client.query(
+      `
+      UPDATE User 
+      filter .email = "${userEmail}"
+      SET {
+       verseData += (
+       INSERT Verse {
+       reference := "${title}",
+       verse := "${description}"
+       }
+       )
       }
-    );
+      `
+    )
     return result;
   };
 
@@ -154,23 +134,6 @@ export const createUserVerseData = async (collection: Collection, userEmail: str
   }; 
 
   export const deleteUserVerseData = async ( userEmail: string , verseId:string) => {
-    console.log(" delete useremail sefverr",userEmail , verseId);
-    
-    // const query = {
-    //   email: userEmail,
-    //   'verseData._id': verseId
-    // };
-
-    // const update = {
-    //   $pull: {
-    //     verseData: { _id: verseId }
-    //   }
-    // };
-
-    // const result = await collection.updateOne(query,update);
-    // console.log("result",result);
-    // return result;
-
     const result = await client.query(
       `WITH
       user := (SELECT User FILTER .email = "${userEmail}"),
@@ -182,8 +145,6 @@ export const createUserVerseData = async (collection: Collection, userEmail: str
     DELETE Verse
     FILTER .id = <uuid>"${verseId}";`
     )
-
-    console.log("delte data,...",result);
     return result;
   }; 
   

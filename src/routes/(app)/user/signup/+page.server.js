@@ -44,14 +44,17 @@ export const actions = {
       return fail(400,SignUpResponse)
   }
 
-    const collection = await dbConn();
-    let emailList = [];
+  let emailList = [];
+
+
+    
 
     try{
-      emailList = await returnEmailsList(collection);
-      console.log("emaillist......",emailList);
-      if(emailList.includes(SignUpResponse.email.toString())){
-
+      // emailList = await returnEmailsList(collection);
+      emailList = await returnEmailsList();
+      console.log("emaillist......",emailList,SignUpResponse.email.toString());
+      const duplicateEmail = emailList.some(obj => obj.email === SignUpResponse.email);
+      if(duplicateEmail){
           SignUpResponse.error = true;
           SignUpResponse.emailUsed = true;
           SignUpResponse.message = "This email address has already been used!";
@@ -66,17 +69,30 @@ export const actions = {
 
   SignUpResponse.password = password;
   const userToInsert = await registerFormToUserWithoutId(SignUpResponse);
-  const resultOfInsert = await registerUser(collection,userToInsert);
-  console.log("user inserted",resultOfInsert , );
-  if(resultOfInsert.acknowledged && resultOfInsert.insertedId){ 
+  // try{
+    await registerUser(userToInsert);
     const authToken = jwt.sign({ email: email },SECRET_INGREDIENT,{expiresIn:'24h'});
     cookies.set('authToken',authToken , { path: '/' });
     user.set(email)
+    console.log("useremauil set ....");
     throw redirect(303,`/verse_list`);
-  }
-  SignUpResponse.password = '';
-  SignUpResponse.error = true;
-  SignUpResponse.message = "Error registering user!";
-  return fail(503,SignUpResponse)
+  // }
+  // catch{
+  //   SignUpResponse.password = '';
+  //   SignUpResponse.error = true;
+  //   SignUpResponse.message = "Error registering user!";
+  //   return fail(503,SignUpResponse)
+  // }
+  // const resultOfInsert = await registerUser(userToInsert);
+  // const collection = await dbConn();
+  // console.log("user inserted",resultOfInsert , );
+  // if(resultOfInsert.acknowledged && resultOfInsert.insertedId){ 
+  //   const authToken = jwt.sign({ email: email },SECRET_INGREDIENT,{expiresIn:'24h'});
+  //   cookies.set('authToken',authToken , { path: '/' });
+  //   user.set(email)
+  //   throw redirect(303,`/verse_list`);
+  // }
+ 
+  
   },
 };

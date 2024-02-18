@@ -5,7 +5,6 @@ import {verseData} from '$lib/verseData.js';
 // import {findUserVerseByEmail } from '../../backendUtils.ts';
 
 export const load = async ({locals})=>{
-
  if(locals?.user?.email){
     // const collection = await dbConn();
   //  const user = await findUserVerseByEmail(collection ,locals.user.email);

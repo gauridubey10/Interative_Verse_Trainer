@@ -2,7 +2,7 @@
 
 import { redirect } from "@sveltejs/kit"
 import { dbConn } from '../../../../db/mongo';
-import brcyptjs from 'bcrypt';
+import brcyptjs from 'bcryptjs';
 import {findUserByEmailWithPassword } from '../../../../backendUtils';
 import jwt from 'jsonwebtoken';
 import { SECRET_INGREDIENT } from '$env/static/private';
@@ -28,15 +28,15 @@ export const actions = {
   }
 
  
-    const collection = await dbConn();
-    const userAttemptingLogin = await findUserByEmailWithPassword(collection,email);
+    // const collection = await dbConn();
+    const userAttemptingLogin = await findUserByEmailWithPassword(email);
     if(userAttemptingLogin == "User Not Found"){
       loginResponse.error = true,
       loginResponse.message = "Invalid username or password!";
       return loginResponse
     }
 
-    console.log("pasword email login",userAttemptingLogin);
+    console.log("pasword email login",userAttemptingLogin , userAttemptingLogin.password);
     const authAttempt = await brcyptjs.compare(password,userAttemptingLogin.password);
     if(!authAttempt){
         loginResponse.error = true,
@@ -46,6 +46,7 @@ export const actions = {
       
     
         const authToken = jwt.sign({ email: email },SECRET_INGREDIENT,{expiresIn:'24h'});
+        console.log("authtoken genrated..",authToken);
         cookies.set('authToken',authToken , { path: '/' });
         user.set(email)
         throw redirect(303 , '/');

@@ -19,6 +19,7 @@ export async function load({ event }) {
 
 export async function handle({event,resolve}) {
   const authToken = event.cookies.get('authToken');
+  console.log("authtoken hooks",authToken);
     if(!authToken){
        event.locals.user = undefined;
        return await resolve(event)
@@ -26,6 +27,7 @@ export async function handle({event,resolve}) {
       let claims = '';
       try{
        claims = jwt.verify(authToken,SECRET_INGREDIENT);
+       console.log("claim,,,",claims);
       } catch(error){
         if (error.name === 'TokenExpiredError') {
           console.error('Token has expired');
@@ -35,9 +37,9 @@ export async function handle({event,resolve}) {
       }
 
     if(authToken && claims && event.url.pathname =='/user/login'){
-        const collection = await dbConn();
-        const fullUser = await findUserByEmail(collection,claims.email);
-        const userVerse = await findUserVerseByEmail(collection ,locals.user.email);
+       
+        const fullUser = await findUserByEmail(claims.email);
+        const userVerse = await findUserVerseByEmail(locals.user.email);
         event.locals.user = {
          user: fullUser.email,
          verse: userVerse.verseData
@@ -52,13 +54,15 @@ export async function handle({event,resolve}) {
         user: true
        }
     }
-    const collection = await dbConn();
-    const userVerse = await findUserVerseByEmail(collection ,claims.email);
-
+    // const collection = await dbConn();
+    console.log("claim value...",claims.email);
+    const userVerse = await findUserVerseByEmail(claims.email);
+    if(!userVerse) {event.locals.user = undefined; throw redirect(302,'/user/login');}
     event.locals.user = {
       email: claims.email,
       verse: userVerse.verseData
     }
+
 
     return await resolve(event)
  

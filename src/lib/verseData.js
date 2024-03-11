@@ -24,7 +24,7 @@ import { v4 as uuidv4 } from 'uuid';
   ]
 
   export const verseData = verse.map(entry => ({
-    // _id: uuidv4(),
+    _id: uuidv4(),
     reference: entry.reference,
     verse: entry.verse,
   }));

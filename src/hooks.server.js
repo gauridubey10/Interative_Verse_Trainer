@@ -39,7 +39,7 @@ export async function handle({event,resolve}) {
     if(authToken && claims && event.url.pathname =='/user/login'){
        
         const fullUser = await findUserByEmail(claims.email);
-        const userVerse = await findUserVerseByEmail(locals.user.email);
+        const userVerse = await findUserVerseByEmail(claims.email);
         event.locals.user = {
          user: fullUser.email,
          verse: userVerse.verseData
